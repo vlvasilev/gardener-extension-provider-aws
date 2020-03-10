@@ -16,22 +16,19 @@ package infrastructure
 
 import (
 	"context"
+	"fmt"
+
+	"github.com/gardener/gardener-extension-provider-aws/pkg/aws"
 
 	extensionscontroller "github.com/gardener/gardener-extensions/pkg/controller"
-
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
 )
 
-// Actuator acts upon Infrastructure resources.
-type Actuator interface {
-	// Reconcile the Infrastructure config.
-	Reconcile(context.Context, *extensionsv1alpha1.Infrastructure, *extensionscontroller.Cluster) error
-	// Delete the Infrastructure config.
-	Delete(context.Context, *extensionsv1alpha1.Infrastructure, *extensionscontroller.Cluster) error
-	// Restore takes the state of the Infrastrucure and apply it to the terraform pod output state
-	// before calling the erraform job
-	Restore(context.Context, *extensionsv1alpha1.Infrastructure, *extensionscontroller.Cluster) error
-	// Migrate delete the terrarom k8s resources whithout deleting
-	// the corresponding resources in the IaaS provider
-	Migrate(context.Context, *extensionsv1alpha1.Infrastructure, *extensionscontroller.Cluster) error
+func (a *actuator) Migrate(ctx context.Context, infrastructure *extensionsv1alpha1.Infrastructure, cluster *extensionscontroller.Cluster) error {
+	tf, err := a.newTerraformer(aws.TerraformerPurposeInfra, infrastructure.Namespace, infrastructure.Name)
+	if err != nil {
+		return fmt.Errorf("could not create the Terraformer: %+v", err)
+	}
+
+	return tf.CleanupConfiguration(ctx)
 }

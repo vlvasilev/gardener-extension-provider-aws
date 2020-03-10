@@ -234,46 +234,106 @@ func (m *MockChartApplier) EXPECT() *MockChartApplierMockRecorder {
 	return m.recorder
 }
 
-// Apply mocks base method
-func (m *MockChartApplier) Apply(arg0 context.Context, arg1, arg2, arg3 string, arg4 ...kubernetes.ApplyOption) error {
+// ApplyChart mocks base method
+func (m *MockChartApplier) ApplyChart(arg0 context.Context, arg1, arg2, arg3 string, arg4, arg5 map[string]interface{}) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1, arg2, arg3}
-	for _, a := range arg4 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Apply", varargs...)
+	ret := m.ctrl.Call(m, "ApplyChart", arg0, arg1, arg2, arg3, arg4, arg5)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Apply indicates an expected call of Apply
-func (mr *MockChartApplierMockRecorder) Apply(arg0, arg1, arg2, arg3 interface{}, arg4 ...interface{}) *gomock.Call {
+// ApplyChart indicates an expected call of ApplyChart
+func (mr *MockChartApplierMockRecorder) ApplyChart(arg0, arg1, arg2, arg3, arg4, arg5 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1, arg2, arg3}, arg4...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*MockChartApplier)(nil).Apply), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyChart", reflect.TypeOf((*MockChartApplier)(nil).ApplyChart), arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
-// Delete mocks base method
-func (m *MockChartApplier) Delete(arg0 context.Context, arg1, arg2, arg3 string, arg4 ...kubernetes.DeleteOption) error {
+// ApplyChartInNamespace mocks base method
+func (m *MockChartApplier) ApplyChartInNamespace(arg0 context.Context, arg1, arg2, arg3 string, arg4, arg5 map[string]interface{}) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1, arg2, arg3}
-	for _, a := range arg4 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Delete", varargs...)
+	ret := m.ctrl.Call(m, "ApplyChartInNamespace", arg0, arg1, arg2, arg3, arg4, arg5)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Delete indicates an expected call of Delete
-func (mr *MockChartApplierMockRecorder) Delete(arg0, arg1, arg2, arg3 interface{}, arg4 ...interface{}) *gomock.Call {
+// ApplyChartInNamespace indicates an expected call of ApplyChartInNamespace
+func (mr *MockChartApplierMockRecorder) ApplyChartInNamespace(arg0, arg1, arg2, arg3, arg4, arg5 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1, arg2, arg3}, arg4...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockChartApplier)(nil).Delete), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyChartInNamespace", reflect.TypeOf((*MockChartApplier)(nil).ApplyChartInNamespace), arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// ApplyChartInNamespaceWithOptions mocks base method
+func (m *MockChartApplier) ApplyChartInNamespaceWithOptions(arg0 context.Context, arg1, arg2, arg3 string, arg4, arg5 map[string]interface{}, arg6 kubernetes.ApplierOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApplyChartInNamespaceWithOptions", arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApplyChartInNamespaceWithOptions indicates an expected call of ApplyChartInNamespaceWithOptions
+func (mr *MockChartApplierMockRecorder) ApplyChartInNamespaceWithOptions(arg0, arg1, arg2, arg3, arg4, arg5, arg6 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyChartInNamespaceWithOptions", reflect.TypeOf((*MockChartApplier)(nil).ApplyChartInNamespaceWithOptions), arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+// ApplyChartWithOptions mocks base method
+func (m *MockChartApplier) ApplyChartWithOptions(arg0 context.Context, arg1, arg2, arg3 string, arg4, arg5 map[string]interface{}, arg6 kubernetes.ApplierOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApplyChartWithOptions", arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApplyChartWithOptions indicates an expected call of ApplyChartWithOptions
+func (mr *MockChartApplierMockRecorder) ApplyChartWithOptions(arg0, arg1, arg2, arg3, arg4, arg5, arg6 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyChartWithOptions", reflect.TypeOf((*MockChartApplier)(nil).ApplyChartWithOptions), arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+// ApplyManifest mocks base method
+func (m *MockChartApplier) ApplyManifest(arg0 context.Context, arg1 kubernetes.UnstructuredReader, arg2 kubernetes.ApplierOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApplyManifest", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApplyManifest indicates an expected call of ApplyManifest
+func (mr *MockChartApplierMockRecorder) ApplyManifest(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyManifest", reflect.TypeOf((*MockChartApplier)(nil).ApplyManifest), arg0, arg1, arg2)
+}
+
+// DeleteChart mocks base method
+func (m *MockChartApplier) DeleteChart(arg0 context.Context, arg1, arg2, arg3 string, arg4, arg5 map[string]interface{}) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteChart", arg0, arg1, arg2, arg3, arg4, arg5)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteChart indicates an expected call of DeleteChart
+func (mr *MockChartApplierMockRecorder) DeleteChart(arg0, arg1, arg2, arg3, arg4, arg5 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteChart", reflect.TypeOf((*MockChartApplier)(nil).DeleteChart), arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// DeleteManifest mocks base method
+func (m *MockChartApplier) DeleteManifest(arg0 context.Context, arg1 kubernetes.UnstructuredReader) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteManifest", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteManifest indicates an expected call of DeleteManifest
+func (mr *MockChartApplierMockRecorder) DeleteManifest(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteManifest", reflect.TypeOf((*MockChartApplier)(nil).DeleteManifest), arg0, arg1)
 }
 
 // Render mocks base method
-func (m *MockChartApplier) Render(arg0, arg1, arg2 string, arg3 interface{}) (*chartrenderer.RenderedChart, error) {
+func (m *MockChartApplier) Render(arg0, arg1, arg2 string, arg3 map[string]interface{}) (*chartrenderer.RenderedChart, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Render", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*chartrenderer.RenderedChart)
@@ -288,7 +348,7 @@ func (mr *MockChartApplierMockRecorder) Render(arg0, arg1, arg2, arg3 interface{
 }
 
 // RenderArchive mocks base method
-func (m *MockChartApplier) RenderArchive(arg0 []byte, arg1, arg2 string, arg3 interface{}) (*chartrenderer.RenderedChart, error) {
+func (m *MockChartApplier) RenderArchive(arg0 []byte, arg1, arg2 string, arg3 map[string]interface{}) (*chartrenderer.RenderedChart, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RenderArchive", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*chartrenderer.RenderedChart)

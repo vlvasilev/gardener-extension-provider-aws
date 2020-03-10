@@ -52,11 +52,6 @@ func (a *actuator) Reconcile(ctx context.Context, infrastructure *extensionsv1al
 		return fmt.Errorf("failed to generate Terraform config: %+v", err)
 	}
 
-	terraformState, err := terraformer.UnmarshalRawState(infrastructure.Status.State)
-	if err != nil {
-		return err
-	}
-
 	release, err := a.ChartRenderer().Render(filepath.Join(aws.InternalChartsPath, "aws-infra"), "aws-infra", infrastructure.Namespace, terraformConfig)
 	if err != nil {
 		return fmt.Errorf("could not render Terraform chart: %+v", err)
@@ -74,7 +69,7 @@ func (a *actuator) Reconcile(ctx context.Context, infrastructure *extensionsv1al
 			release.FileContent("main.tf"),
 			release.FileContent("variables.tf"),
 			[]byte(release.FileContent("terraform.tfvars")),
-			terraformState.Data,
+			"",
 		)).
 		Apply(); err != nil {
 
