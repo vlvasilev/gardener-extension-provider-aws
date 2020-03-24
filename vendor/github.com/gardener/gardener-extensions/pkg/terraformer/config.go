@@ -126,15 +126,30 @@ func CreateOrUpdateConfigurationConfigMap(ctx context.Context, c client.Client, 
 }
 
 // CreateStateConfigMap creates the Terraformer state ConfigMap with the given state.
-func CreateStateConfigMap(ctx context.Context, c client.Client, namespace, name, state string) error {
+func CreateStateConfigMap(ctx context.Context, c client.Client, namespace, name string) error {
 	configMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{Namespace: namespace, Name: name},
 		Data: map[string]string{
-			StateKey: state,
+			StateKey: "",
 		},
 	}
 
 	return c.Create(ctx, configMap)
+}
+
+// CreateOrUpdateStateConfigMap creates or updates the Terraformer state ConfigMap with the given state.
+func CreateOrUpdateStateConfigMap(ctx context.Context, c client.Client, namespace, name, state string) (*corev1.ConfigMap, error) {
+	configMap := &corev1.ConfigMap{ObjectMeta: metav1.ObjectMeta{Namespace: namespace, Name: name}}
+
+	_, err := controllerutil.CreateOrUpdate(ctx, c, configMap, func() error {
+		if configMap.Data == nil {
+			configMap.Data = make(map[string]string)
+		}
+		configMap.Data[StateKey] = state
+		return nil
+	})
+
+	return configMap, err
 }
 
 // CreateOrUpdateTFVarsSecret creates or updates the Terraformer variables Secret with the given tfvars.
@@ -159,8 +174,8 @@ func (f initializerFunc) Initialize(config *InitializerConfig) error {
 }
 
 // DefaultInitializer is an Initializer that initializes the configuration, variables and state resources
-// based on the given main, variables, tfvars and state content and on the given InitializerConfig.
-func DefaultInitializer(c client.Client, main, variables string, tfvars []byte, state string) Initializer {
+// based on the given main, variables and tfvars content and on the given InitializerConfig.
+func DefaultInitializer(c client.Client, main, variables string, tfvars []byte) Initializer {
 	return initializerFunc(func(config *InitializerConfig) error {
 		ctx := context.TODO()
 		if _, err := CreateOrUpdateConfigurationConfigMap(ctx, c, config.Namespace, config.ConfigurationName, main, variables); err != nil {
@@ -172,10 +187,34 @@ func DefaultInitializer(c client.Client, main, variables string, tfvars []byte, 
 		}
 
 		if config.InitializeState {
-			if err := CreateStateConfigMap(ctx, c, config.Namespace, config.StateName, state); err != nil && !apierrors.IsAlreadyExists(err) {
+			if err := CreateStateConfigMap(ctx, c, config.Namespace, config.StateName); err != nil && !apierrors.IsAlreadyExists(err) {
 				return err
 			}
 		}
+
+		return nil
+	})
+}
+
+// StateInitializer is an Initializer that initializes the configuration, variables and state resources
+// based on the given main, variables, tfvars and state content and on the given InitializerConfig.
+func StateInitializer(c client.Client, main, variables string, tfvars []byte, state string) Initializer {
+	return initializerFunc(func(config *InitializerConfig) error {
+		ctx := context.TODO()
+		if _, err := CreateOrUpdateConfigurationConfigMap(ctx, c, config.Namespace, config.ConfigurationName, main, variables); err != nil {
+			return err
+		}
+
+		if _, err := CreateOrUpdateTFVarsSecret(ctx, c, config.Namespace, config.VariablesName, tfvars); err != nil {
+			return err
+		}
+
+		if config.InitializeState {
+			if _, err := CreateOrUpdateStateConfigMap(ctx, c, config.Namespace, config.StateName, state); err != nil && !apierrors.IsAlreadyExists(err) {
+				return err
+			}
+		}
+
 		return nil
 	})
 }

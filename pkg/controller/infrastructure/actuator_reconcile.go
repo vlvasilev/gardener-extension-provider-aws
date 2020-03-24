@@ -77,11 +77,6 @@ func Reconcile(
 		return nil, nil, fmt.Errorf("failed to generate Terraform config: %+v", err)
 	}
 
-	terraformState, err := terraformer.UnmarshalRawState(infrastructure.Status.State)
-	if err != nil {
-		return nil, nil, err
-	}
-
 	release, err := chartRenderer.Render(filepath.Join(aws.InternalChartsPath, "aws-infra"), "aws-infra", infrastructure.Namespace, terraformConfig)
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not render Terraform chart: %+v", err)
@@ -99,7 +94,6 @@ func Reconcile(
 			release.FileContent("main.tf"),
 			release.FileContent("variables.tf"),
 			[]byte(release.FileContent("terraform.tfvars")),
-			terraformState.Data,
 		)).
 		Apply(); err != nil {
 

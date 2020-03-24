@@ -17,8 +17,6 @@ package healthcheck
 import (
 	"context"
 
-	extensionscontroller "github.com/gardener/gardener-extensions/pkg/controller"
-
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -41,20 +39,8 @@ import (
 	More sophisticated checks should be implemented in the extension itself by using the HealthCheck interface.
 */
 
-// GetExtensionObjectFunc returns the extension object that should be registered with the health check controller
-type GetExtensionObjectFunc = func() runtime.Object
-
-// PreCheckFunc checks whether the health check shall be performed based on the given object and cluster.
-type PreCheckFunc = func(runtime.Object, *extensionscontroller.Cluster) bool
-
-// ConditionTypeToHealthCheck registers a HealthCheck for the given ConditionType. If the PreCheckFunc is not nil it will
-// be executed with the given object before the health check if performed. Otherwise, the health check will always be
-// performed.
-type ConditionTypeToHealthCheck struct {
-	ConditionType string
-	PreCheckFunc  PreCheckFunc
-	HealthCheck   HealthCheck
-}
+// RegisterExtension returns the extension object that should be registered with the health check controller
+type RegisterExtension = func() runtime.Object
 
 // HealthCheckActuator acts upon registered resources.
 type HealthCheckActuator interface {

@@ -166,7 +166,7 @@ github.com/gardener/gardener/test/framework/config
 github.com/gardener/gardener/test/framework/reporter
 github.com/gardener/gardener/test/integration/framework
 github.com/gardener/gardener/test/integration/shoots
-# github.com/gardener/gardener-extensions v1.5.0
+# github.com/gardener/gardener-extensions v1.5.0 => github.com/vlvasilev/gardener-extensions v0.0.0-20200324115532-7cf116dbc51e
 github.com/gardener/gardener-extensions/hack
 github.com/gardener/gardener-extensions/hack/.ci
 github.com/gardener/gardener-extensions/hack/api-reference/template
